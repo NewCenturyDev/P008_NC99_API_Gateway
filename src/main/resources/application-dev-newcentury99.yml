@@ -1,0 +1,11 @@
+# Environment Variables - For Development Environment of NewCentury99
+
+# Client Network Setting (hostname)
+server:
+  port: 80
+eureka:
+  instance:
+    hostname: localhost
+  client:
+    service-url:
+      defaultZone: http://127.0.0.1:5001/eureka/

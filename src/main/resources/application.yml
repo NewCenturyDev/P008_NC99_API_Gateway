@@ -1,0 +1,87 @@
+spring:
+  application:
+    name: NC99-API-Gateway
+  profiles:
+    active: prod
+  cloud:
+    gateway:
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedOrigins:
+              - "http://localhost:8080"
+              - "http://localhost:5000"
+              - "http://auth.newcentury99.com"
+              - "http://journal.newcentury99.com"
+              - "http://dkzone.newcentury99.com"
+              - "http://leaigo.newcentury99.com"
+              - "http://servercp.newcentury99.com"
+              - "http://nas.newcentury99.com"
+              - "http://tothemoon.newcentury99.com"
+              - "http://retail.newcentury99.com"
+            allowedMethods:
+              - GET
+              - POST
+              - OPTION
+              - PUT
+              - PATCH
+              - DELETE
+            allowedHeaders: '*'
+            allow-credentials: true
+      routes:
+        - id: NC99-AUTH-BACKEND
+          uri: lb://NC99-AUTH-BACKEND
+          predicates:
+            - Path=/auth/**
+          filters:
+            - RewritePath=/auth/(?<path>.*),/$\{path}
+        - id: NC99-MY-JOURNAL-EXPRESS-BACKEND
+          uri: lb://NC99-MY-JOURNAL-EXPRESS-BACKEND
+          predicates:
+            - Path=/journal/**
+          filters:
+            - RewritePath=/journal/(?<path>.*),/$\{path}
+        - id: NC99-DK-ZONE-BACKEND
+          uri: lb://NC99-DK-ZONE-BACKEND
+          predicates:
+            - Path=/dkzone/**
+          filters:
+            - RewritePath=/dkzone/(?<path>.*),/$\{path}
+        - id: NC99-LE-AI-GO-BACKEND
+          uri: lb://NC99-LE-AI-GO-BACKEND
+          predicates:
+            - Path=/leaigo/**
+          filters:
+            - RewritePath=/leaigo/(?<path>.*),/$\{path}
+        - id: NC99-SERVER-CP-BACKEND
+          uri: lb://NC99-SERVER-CP-BACKEND
+          predicates:
+            - Path=/servercp/**
+          filters:
+            - RewritePath=/servercp/(?<path>.*),/$\{path}
+        - id: NC99-NAS-BACKEND
+          uri: lb://NC99-NAS-BACKEND
+          predicates:
+            - Path=/nas/**
+          filters:
+            - RewritePath=/nas/(?<path>.*),/$\{path}
+        - id: NC99-TO-THE-MOON-BACKEND
+          uri: lb://NC99-TO-THE-MOON-BACKEND
+          predicates:
+            - Path=/tothemoon/**
+          filters:
+            - RewritePath=/tothemoon/(?<path>.*),/$\{path}
+        - id: NC99-RETAIL-BACKEND
+          uri: lb://NC99-RETAIL-BACKEND
+          predicates:
+            - Path=/retail/**
+          filters:
+            - RewritePath=/retail/(?<path>.*),/$\{path}
+
+
+## Eureka Client Configuration ##
+eureka:
+  instance:
+    instance-id: ${spring.cloud.client.hostname}:${spring.application.instance_id:${random.value}}
+  client:
+    registry-fetch-interval-seconds: 5
